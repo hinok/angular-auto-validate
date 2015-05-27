@@ -277,8 +277,7 @@
                     disabled: false,
                     validateNonVisibleControls: false,
                     displayErrorsAfterSubmit: false,
-                    removeExternalValidationErrorsOnSubmit: true,
-                    allowErrorsOnSubmit: []
+                    removeExternalValidationErrorsOnSubmit: true
                 };
 
                 this.$get = [

@@ -3,44 +3,13 @@
 
     angular.module('jcs-autoValidate')
         .factory('jcs-elementUtils', [
-            'validator',
-            function (validator) {
-
-                function isElementVisible(el) {
+            function () {
+                var isElementVisible = function (el) {
                     return el[0].offsetWidth > 0 && el[0].offsetHeight > 0;
-                }
-
-                /**
-                 * @param {FormController} formController - Instance of FormController
-                 * @param {Array.<string>} excludedErrors - Array contains list of excluded errors names
-                 */
-                function hasErrorsOtherThanExcluded(formController, excludedErrors) {
-                    /**
-                     * @param {string} errorName - Name of an error
-                     * @return {boolean} Returns true if specified error name is in the list of exluded errors, otherwise false
-                     */
-                    var isExludedError = function (errorName) {
-                        return excludedErrors.indexOf(errorName) > -1;
-                    };
-
-                    for (var errorName in formController.$error) {
-                        if (!isExludedError(errorName) && formController.$error[errorName]) {
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-
-                function getFormOptions(el) {
-                    var frmCtrl = angular.element(el).controller('form');
-                    return frmCtrl !== undefined && frmCtrl !== null ? frmCtrl.autoValidateFormOptions : validator.defaultFormValidationOptions;
-                }
+                };
 
                 return {
-                    isElementVisible: isElementVisible,
-                    hasErrorsOtherThanExcluded: hasErrorsOtherThanExcluded,
-                    getFormOptions: getFormOptions
+                    isElementVisible: isElementVisible
                 };
             }
         ]);
@@ -57,7 +26,8 @@
                     },
 
                     getFormOptions = function (el) {
-                        return elementUtils.getFormOptions(el);
+                        var frmCtrl = angular.element(el).controller('form');
+                        return frmCtrl !== undefined && frmCtrl !== null ? frmCtrl.autoValidateFormOptions : validator.defaultFormValidationOptions;
                     },
 
                     /**
@@ -100,14 +70,11 @@
                             errorType,
                             findErrorType = function ($errors) {
                                 var keepGoing = true,
-                                    isAllowedErrorOnSubmit = false,
                                     errorTypeToReturn;
-
                                 angular.forEach($errors, function (status, errortype) {
-                                    if (status && (keepGoing || isAllowedErrorOnSubmit)) {
+                                    if (keepGoing && status) {
                                         keepGoing = false;
                                         errorTypeToReturn = errortype;
-                                        isAllowedErrorOnSubmit = frmOptions.allowErrorsOnSubmit.indexOf(errorTypeToReturn) > -1;
                                     }
                                 });
 

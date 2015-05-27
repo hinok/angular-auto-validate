@@ -22,6 +22,10 @@
             });
 
             describe('makeDefault', function () {
+                /**
+                 * Foundation allows the .error class to be on either the element or the parent .column element.
+                 */
+
                 it('should remove the error class from the input', function () {
                     var element = angular.element('<input type="text" class="error"/>');
                     foundation5ElementModifier.makeDefault(element);
@@ -29,17 +33,18 @@
                     expect(element.hasClass('error')).to.equal(false);
                 });
 
-                it('should remove the small.error element which is added after the input element', function () {
-                    var parentElement = angular.element('<div class="columns error">');
-                    var inputElement = angular.element('<input type="text" />');
-                    var smallElement = angular.element('<small class="error">error text</small>');
+                it('should remove the error class from the parent element with .columns class', function () {
+                    var element = angular.element('<div class="columns error"><input type="text" /></div>');
+                    foundation5ElementModifier.makeDefault(element);
 
-                    parentElement.append(inputElement);
-                    parentElement.append(smallElement);
+                    expect(element.hasClass('error')).to.equal(false);
+                });
 
-                    foundation5ElementModifier.makeValid(inputElement);
+                it('should remove the small.error element from the parent element with .columns class', function () {
+                    var element = angular.element('<div class="columns error"><input type="text" /><small class="error">error text</small></div>');
+                    foundation5ElementModifier.makeDefault(element);
 
-                    expect(parentElement.find('small.error').length).to.equal(0);
+                    expect(element.find('small.error').length).to.equal(0);
                 });
             });
 
@@ -55,17 +60,18 @@
                     expect(element.hasClass('error')).to.equal(false);
                 });
 
-                it('should remove the small.error element which is added after the input element', function () {
-                    var parentElement = angular.element('<div class="columns error">');
-                    var inputElement = angular.element('<input type="text" />');
-                    var smallElement = angular.element('<small class="error">error text</small>');
+                it('should remove the error class from the parent element with .columns class', function () {
+                    var element = angular.element('<div class="columns error"><input type="text" /></div>');
+                    foundation5ElementModifier.makeValid(element);
 
-                    parentElement.append(inputElement);
-                    parentElement.append(smallElement);
+                    expect(element.hasClass('error')).to.equal(false);
+                });
 
-                    foundation5ElementModifier.makeValid(inputElement);
+                it('should remove the small.error element from the parent element with .columns class', function () {
+                    var element = angular.element('<div class="columns error"><input type="text" /><small class="error">error text</small></div>');
+                    foundation5ElementModifier.makeValid(element);
 
-                    expect(parentElement.find('small.error').length).to.equal(0);
+                    expect(element.find('small.error').length).to.equal(0);
                 });
             });
 
@@ -81,15 +87,18 @@
                     expect(element.hasClass('error')).to.equal(true);
                 });
 
-                it('should add the small.error element after input', function () {
-                    var parentElement = angular.element('<div>');
-                    var element = angular.element('<input type="text" />');
-
-                    parentElement.append(element);
+                it('should add the error class to the parent element with .columns class', function () {
+                    var element = angular.element('<div class="columns"><input type="text" /></div>');
                     foundation5ElementModifier.makeInvalid(element);
 
-                    expect(element.next().hasClass('error')).to.equal(true);
-                    expect(parentElement.find('small.error').length).to.equal(1);
+                    expect(element.hasClass('error')).to.equal(true);
+                });
+
+                it('should add the small.error element to the parent element with .columns class', function () {
+                    var element = angular.element('<div class="columns"><input type="text" /></div>');
+                    foundation5ElementModifier.makeInvalid(element);
+
+                    expect(element.find('small.error').length).to.equal(1);
                 });
             });
         });
