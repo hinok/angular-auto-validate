@@ -10,7 +10,6 @@
     describe('ngModelDirective decorator', function () {
         var sandbox, $rootScope, $q, validationManager, $timeout,
             element, $compile, debounce, debounceStub,
-            elementUtils,
             compileElement = function (html, includesForm) {
                 html = includesForm ? html : '<form ng-submit="">' + html + '</form>';
                 element = angular.element(html);
@@ -36,7 +35,6 @@
                 $timeout = $injector.get('$timeout');
                 debounce = $injector.get('jcs-debounce');
                 validationManager = $injector.get('validationManager');
-                elementUtils = $injector.get('jcs-elementUtils');
 
                 debounceStub = sandbox.stub();
 

@@ -7,34 +7,28 @@
                 '$delegate',
                 '$parse',
                 'validationManager',
-                'jcs-elementUtils',
-                function ($delegate, $parse, validationManager, elementUtils) {
+                function ($delegate, $parse, validationManager) {
                     $delegate[0].compile = function ($element, attrs) {
                         var fn = $parse(attrs.ngSubmit),
-                            isForcedSubmit = attrs.ngSubmitForce === 'true';
+                            force = attrs.ngSubmitForce === 'true';
 
                         return function (scope, element) {
                             function handlerFn(event) {
                                 scope.$apply(function () {
-                                    var isFormValid;
-                                    var isDisabled;
-                                    var allowErrorsOnSubmit;
-                                    var hasOnlyAllowedErrors;
                                     var formController = $element.controller('form');
-
-                                    if (formController === undefined || formController === null || !formController.autoValidateFormOptions) {
-                                        return;
-                                    }
-
-                                    isFormValid = validationManager.validateForm(element);
-                                    isDisabled = formController.autoValidateFormOptions.disabled === true;
-                                    allowErrorsOnSubmit = formController.autoValidateFormOptions.allowErrorsOnSubmit;
-                                    hasOnlyAllowedErrors = allowErrorsOnSubmit.length > 0 && !elementUtils.hasErrorsOtherThanExcluded(formController, allowErrorsOnSubmit);
-
-                                    if (isDisabled || isForcedSubmit || isFormValid || (!isFormValid && hasOnlyAllowedErrors)) {
+                                    if (formController !== undefined &&
+                                        formController !== null &&
+                                        formController.autoValidateFormOptions &&
+                                        formController.autoValidateFormOptions.disabled === true) {
                                         fn(scope, {
                                             $event: event
                                         });
+                                    } else {
+                                        if (validationManager.validateForm(element) || force === true) {
+                                            fn(scope, {
+                                                $event: event
+                                            });
+                                        }
                                     }
                                 });
                             }
