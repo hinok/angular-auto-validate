@@ -20,7 +20,7 @@
                                     var isDisabled;
                                     var errorsAllowedOnSubmit;
                                     var hasOnlyAllowedErrors;
-                                    var formController = $element.controller('form');
+                                    var formController = element.controller('form');
 
                                     if (formController === undefined || formController === null || !formController.autoValidateFormOptions) {
                                         return;
