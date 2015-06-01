@@ -1,5 +1,5 @@
 /*
- * angular-auto-validate - v1.18.6 - 2015-05-27
+ * angular-auto-validate - v1.18.6 - 2015-06-01
  * https://github.com/jonsamwell/angular-auto-validate
  * Copyright (c) 2015 Jon Samwell (http://www.jonsamwell.com)
  */
@@ -1189,7 +1189,7 @@
                                     var isDisabled;
                                     var errorsAllowedOnSubmit;
                                     var hasOnlyAllowedErrors;
-                                    var formController = $element.controller('form');
+                                    var formController = element.controller('form');
 
                                     if (formController === undefined || formController === null || !formController.autoValidateFormOptions) {
                                         return;
